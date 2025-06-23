@@ -1,0 +1,75 @@
+@font-face {
+    font-family: 'Roboto';
+    src: url('fonts/Roboto.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    background-color: #0A1F3D;
+    color: white;
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', medium;
+    font-size: 40px;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: red;
+}
+
+.head_foot {
+    display: flex;
+    height: 100px;   
+    align-items: center;
+    justify-content: space-between;
+    background-color: #4A697B
+}
+
+.logo {
+    width: 177px;
+    height: 100px;
+}
+
+.logo img {
+    width: 177px;
+    height: 100px;
+}
+
+.navigation a {
+    font-size: 30px;
+    margin-right: 100px;
+}
+
+.container {
+    width: 650px;
+    margin: 50px 0 0 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.name_dev, .date_dev, .dev_passport {
+    font-size: 30px;
+    margin-right: 20px;
+    max-width: 300px;
+}
+
+.position {
+    margin-top: -170px;
+}
+
+.pos_name {
+    font-size: 30px;
+}
+
+.dop_info {
+    font-size: 25px;
+    font-family: 'Roboto, light';
+}
