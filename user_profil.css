@@ -1,0 +1,158 @@
+@font-face {
+    font-family: 'Roboto';
+    src: url('fonts/Roboto.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    background-color: #0A1F3D;
+    color: white;
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', medium;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: red;
+}
+
+.head_foot {
+    display: flex;
+    height: 100px;   
+    align-items: center;
+    justify-content: space-between;
+    background-color: #4A697B
+}
+
+.logo {
+    width: 177px;
+    height: 100px;
+}
+
+.logo img {
+    width: 177px;
+    height: 100px;
+}
+
+.navigation a {
+    font-size: 30px;
+    margin-right: 100px;
+}
+
+.container {
+    width: 650px;
+    margin: 50px 0 0 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.login {
+    display: flex;
+    width: 625px;
+    height: 200px;
+}
+
+.login_p {
+    font-size: 30px;
+}
+
+.name_user {
+    font-size: 20px;
+    font-family: 'Roboto, light';
+    max-width: 360px;
+    display: flex;
+    align-items: flex-end;
+}
+
+.foto_user {
+    width: 200px;
+    height: 200px;
+}
+
+.pass {
+    display: flex;
+    width: 625px;
+    height: 200px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.pass_p {
+    font-size: 50px;
+}
+
+.pass_user {
+    font-size: 30px;
+    font-family: 'Roboto, light';
+    max-width: 360px;
+}
+
+.foto_pass {
+    width: 200px;
+    height: 200px;
+}
+
+.repass {
+    background-color: #0A1F3D;
+    color: #4A697B;
+    border: none;
+}
+
+.repass:hover {
+    cursor: pointer;
+    color: white;
+}
+
+.mail {
+    display: flex;
+    width: 625px;
+    height: 200px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.mail_p {
+    font-size: 50px;
+}
+
+.name_mail {
+    font-size: 30px;
+    font-family: 'Roboto, light';
+    max-width: 360px;
+}
+
+.foto_mail {
+    width: 200px;
+    height: 200px;
+}
+
+.in_project {
+    height: 150px;
+    width: 550px;
+    margin: 0 0 0 30%;
+}
+
+.projects {
+    width: 540px;
+    height: 140px;
+    color: white;
+    background-color: #4A697B;
+    border-radius: 30px;
+    border: none;
+    font-size: 40px;
+}
+
+.projects:hover {
+    transition: background-color 0.3s ease;
+    border: solid white 1px;
+    background-color: #0d294f;
+    cursor: pointer;
+}

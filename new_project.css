@@ -1,0 +1,166 @@
+@font-face {
+    font-family: 'Roboto';
+    src: url('fonts/Roboto.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    background-color: #0A1F3D;
+    color: white;
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', medium;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: red;
+}
+
+.head_foot {
+    display: flex;
+    height: 100px;   
+    align-items: center;
+    justify-content: space-between;
+    background-color: #4A697B
+}
+
+.logo {
+    width: 177px;
+    height: 100px;
+}
+
+.logo img {
+    width: 177px;
+    height: 100px;
+}
+
+.navigation a {
+    font-size: 30px;
+    margin-right: 100px;
+}
+
+.container {
+    margin: 20px 40px 20px 40px;
+}
+
+.create_form {
+    width: 815px;
+    height: auto;
+}
+
+.input {
+    font-size: 30px;
+    font-family: 'Roboto, light';
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.input input {
+    width: 500px;
+    height: 30px;
+    border-radius: 30px;
+    border: none;
+    padding: 10px 15px;
+}
+
+#comm input {
+    height: 100px;
+}
+
+.input_file {
+    width: 345px;
+    height: 90px;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 100px 0 100px;
+}
+
+.files {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 345px;
+    height: 90px;
+    background-color: #4A697B;
+    border-radius: 30px;
+    border: none;
+}
+
+/* Стили остаются прежними, но с небольшими улучшениями */
+.file-upload {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  z-index: -1;
+}
+
+.custom-button {
+  display: inline-block;
+  padding: 10px 20px;
+  background: #4285f4;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+  font-family: sans-serif;
+  font-size: 14px;
+  text-align: center;
+}
+
+.custom-button:hover {
+  background: #3367d6;
+}
+
+.file-name {
+  color: #ffffff;
+  font-size: 14px;
+  font-family: sans-serif;
+}
+
+.create_project {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.send {
+    width: 345px;
+    height: 90px;
+    color: white;
+    background-color: #4A697B;
+    border-radius: 30px;
+    border: none;
+    font-size: 25px;
+}
+
+.send:hover {
+    cursor: pointer;
+}
+
+.send_form {
+    margin-top: 30px;
+}
+
+.create_text {
+    font-size: 40px;
+}

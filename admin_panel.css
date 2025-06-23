@@ -1,0 +1,107 @@
+@font-face {
+    font-family: 'Roboto';
+    src: url('fonts/Roboto.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    background-color: #0A1F3D;
+    color: white;
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif; /* Заменил 'medium' на 'sans-serif' как fallback */
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: red;
+}
+
+.head_foot {
+    display: flex;
+    height: 100px;   
+    align-items: center;
+    justify-content: space-between;
+    background-color: #4A697B;
+}
+
+.logo {
+    width: 177px;
+    height: 100px;
+}
+
+.logo img {
+    width: 177px;
+    height: 100px;
+}
+
+.navigation a {
+    font-size: 30px;
+    margin-right: 100px;
+}
+
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Центрируем элементы по горизонтали */
+    margin: 70px 0 30px 0;
+}
+
+.form_container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; 
+}
+
+.select {
+    padding: 20px;
+    color: white;
+    background-color: #4A697B;
+    border: none;
+    border-radius: 30px;
+    width: 1000px;
+    font-size: 20px;
+    margin-right: 20px; /* Отступ справа для кнопки */
+}
+
+.do_request {
+    margin-top: 40px;
+    padding: 20px;
+    color: white;
+    background-color: #4A697B;
+    border: none;
+    border-radius: 20px;
+    font-size: 20px;
+}
+
+.do_request:hover {
+    cursor: pointer;
+}
+
+.result {
+    display: flex;
+    justify-content: center; /* Центрируем таблицу */
+    margin-top: 30px;
+}
+
+.result table {
+    border-collapse: collapse;
+    background-color: #1A2D4D; /* Тёмно-синий фон таблицы */
+    color: rgb(0, 0, 0);
+}
+
+.result th, .result td {
+    border: 1px solid #000000; /* Серо-голубые границы */
+    padding: 10px;
+    text-align: center;
+}
+
+.result th {
+    background-color: #ffffff; /* Фон заголовков */
+}
