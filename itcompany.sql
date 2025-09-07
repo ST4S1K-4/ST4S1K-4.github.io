@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1
--- Время создания: Июн 20 2025 г., 13:53
+-- Время создания: Июн 27 2025 г., 09:16
 -- Версия сервера: 10.4.32-MariaDB
 -- Версия PHP: 8.2.12
 
@@ -67,7 +67,7 @@ CREATE TABLE `developers` (
 
 INSERT INTO `developers` (`id_developers`, `first_name`, `last_name`, `middle_name`, `birth_date`, `series_number`, `salary`, `experience`, `id_user`, `id_post`, `id_department`) VALUES
 (1, 'Michail', 'Chernyavsky', 'Alexeevich', '2006-06-04', 113456789, 50000.00, 3, 4, 1, 1),
-(2, 'Eva', 'Kavinsky', 'Michalovna', '2000-12-11', 220964, 100000.00, 3, 2, 1, 3),
+(2, 'Eva', 'Kavinsky', 'Michalovna', '0000-00-00', 220964, 60000.00, 3, 2, 1, 3),
 (3, 'Ivan', 'Ivanov', 'Ivanovich', '1995-06-12', 73142877, 150000.00, 3, 1, 2, 3);
 
 -- --------------------------------------------------------
@@ -176,7 +176,8 @@ INSERT INTO `users` (`id_users`, `name_user`, `pass_user`, `email_user`, `role_u
 (20, 'выьдпль', '$2y$10$O.f4kWsHQS5KD', NULL, 0),
 (21, 'Anton', '$2y$10$E//y/IRl/F.VJ', NULL, 0),
 (22, 'Ksu', '$2y$10$ECwPYqFc4TTp9', 'st4s1k@internet.ru', 0),
-(23, 'ксюнечка любимая', '$2y$10$UFlm92BFCMqiG', 'stasikstusik@gmail.com', 0);
+(23, 'ксюнечка любимая', '$2y$10$UFlm92BFCMqiG', 'stasikstusik@gmail.com', 0),
+(24, 'Стас', '$2y$10$EwNpm.VmYq7.L', 'exemple@mpt.ru', 0);
 
 --
 -- Индексы сохранённых таблиц
@@ -244,7 +245,7 @@ ALTER TABLE `developers`
 -- AUTO_INCREMENT для таблицы `post`
 --
 ALTER TABLE `post`
-  MODIFY `id_post` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_post` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT для таблицы `project`
@@ -262,7 +263,7 @@ ALTER TABLE `project_dev`
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `id_users` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id_users` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц

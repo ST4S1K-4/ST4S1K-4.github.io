@@ -17,7 +17,7 @@ try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-    
+
     // Получаем данные пользователя
     $user_id = $_SESSION['id_users'];
     $stmt = $pdo->prepare("SELECT name_user, email_user FROM users WHERE id_users = :id_user");
@@ -38,19 +38,21 @@ try {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Профиль</title>
     <link rel="stylesheet" href="user_profil.css">
 </head>
+
 <body>
     <header class="head_foot">
         <div class="logo" name="logo">
             <img src="img/Логотип(1).png" alt="">
         </div>
         <nav class="navigation">
-            <a href="index.html" class="main">Главная</a>
+            <a href="index.php" class="main">Главная</a>
             <a href="#logo" class="main">Профиль</a>
             <a href="projects_user.php" class="main">Мои проекты</a>
         </nav>
@@ -106,4 +108,5 @@ try {
         });
     </script>
 </body>
+
 </html>

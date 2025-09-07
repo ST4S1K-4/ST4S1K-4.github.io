@@ -1,11 +1,95 @@
+<?php
+// Подключение к базе данных для аналитики
+$host = 'localhost';
+$dbname = 'itcompany';
+$username = 'root';
+$password = '';
+
+try {
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    // Создание таблицы для аналитики, если её нет
+    $pdo->exec("
+        CREATE TABLE IF NOT EXISTS site_analytics (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            page_url VARCHAR(255) NOT NULL,
+            visitor_ip VARCHAR(45) NOT NULL,
+            user_agent TEXT,
+            visit_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            session_id VARCHAR(255),
+            referrer VARCHAR(500),
+            INDEX idx_visit_date (visit_date),
+            INDEX idx_page_url (page_url),
+            INDEX idx_session_id (session_id)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8
+    ");
+
+    $pdo->exec("
+        CREATE TABLE IF NOT EXISTS user_sessions (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            session_id VARCHAR(255) UNIQUE NOT NULL,
+            user_id INT,
+            start_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            last_activity TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            page_views INT DEFAULT 1,
+            is_active BOOLEAN DEFAULT TRUE,
+            INDEX idx_session_id (session_id),
+            INDEX idx_user_id (user_id),
+            INDEX idx_start_time (start_time)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8
+    ");
+
+    // Функция для записи посещения
+    function logVisit($pdo, $page_url, $session_id = null)
+    {
+        try {
+            $visitor_ip = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
+            $user_agent = $_SERVER['HTTP_USER_AGENT'] ?? '';
+            $referrer = $_SERVER['HTTP_REFERER'] ?? '';
+
+            $stmt = $pdo->prepare("
+                INSERT INTO site_analytics (page_url, visitor_ip, user_agent, session_id, referrer) 
+                VALUES (?, ?, ?, ?, ?)
+            ");
+            $stmt->execute([$page_url, $visitor_ip, $user_agent, $session_id, $referrer]);
+
+            // Обновляем или создаем сессию
+            if ($session_id) {
+                $stmt = $pdo->prepare("
+                    INSERT INTO user_sessions (session_id, user_id, page_views) 
+                    VALUES (?, ?, 1)
+                    ON DUPLICATE KEY UPDATE 
+                    page_views = page_views + 1,
+                    last_activity = CURRENT_TIMESTAMP
+                ");
+                $stmt->execute([$session_id, $_SESSION['user_id'] ?? null]);
+            }
+        } catch (PDOException $e) {
+            // Ошибка записи аналитики
+        }
+    }
+
+    // Записываем текущее посещение
+    session_start();
+    $session_id = session_id();
+    logVisit($pdo, $_SERVER['REQUEST_URI'], $session_id);
+
+} catch (PDOException $e) {
+    // Ошибка подключения - продолжаем без аналитики
+}
+?>
+
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CodePrime - Разработка веб-сайтов и приложений</title>
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
     <div class="main-container">
         <header class="header">
@@ -15,7 +99,7 @@
                     <div class="logo-column">
                         <img src="img/Логотип(1).png" class="logo" alt="CodePrime Logo">
                     </div>
-                    <div class="nav-column"> 
+                    <div class="nav-column">
                         <nav class="navigation">
                             <a href="#advantages" class="nav-link nav-link-grow">Преимущества</a>
                             <a href="#about" class="nav-link">О нас</a>
@@ -38,7 +122,9 @@
                             <div class="service-body">
                                 <h3 class="service-title">Разработка лендингов</h3>
                                 <p class="service-description">
-                                    Наша команда занимается разработкой лендингов более 10 лет.Разработка лендингов занимает от 2 до 7 дней.
+                                    Наша команда занимается разработкой лендингов более 10 лет.Разработка лендингов
+                                    занимает от 2 до 7
+                                    дней.
                                 </p>
                             </div>
                             <footer class="service-footer">
@@ -59,7 +145,8 @@
                             <div class="service-body">
                                 <h3 class="service-title">Разработка сайтов</h3>
                                 <p class="service-description">
-                                    Наша команда занимается разработкой сайтов более 5 лет.Разработка сайтов занимает от 5 до 30 дней.
+                                    Наша команда занимается разработкой сайтов более 5 лет.Разработка сайтов занимает от
+                                    5 до 30 дней.
                                 </p>
                             </div>
                             <footer class="service-footer">
@@ -76,11 +163,14 @@
                     </div>
                     <div class="service-column">
                         <article class="service-card">
-                            <img src="img/card-img.png" class="service-image service-image-wide" alt="Разработка веб-приложений">
+                            <img src="img/card-img.png" class="service-image service-image-wide"
+                                alt="Разработка веб-приложений">
                             <div class="service-body">
                                 <h3 class="service-title">Разработка веб-приложений</h3>
                                 <p class="service-description">
-                                    Наша команда занимается разработкой веб-приложений более 3 лет.Разработка лендингов занимает от 10 до 60 дней.
+                                    Наша команда занимается разработкой веб-приложений более 3 лет.Разработка лендингов
+                                    занимает от 10 до
+                                    60 дней.
                                 </p>
                             </div>
                             <footer class="service-footer">
@@ -259,78 +349,78 @@
                         </nav>
                     </div>
                 </div>
-<style>
-        .popup {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-        }
+                <style>
+                    .popup {
+                        display: none;
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        background-color: rgba(0, 0, 0, 0.5);
+                        z-index: 1000;
+                    }
 
-        .popup-content {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: white;
-            padding: 20px;
-            border-radius: 5px;
-            text-align: center;
-            width: 300px;
-        }
+                    .popup-content {
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                        background-color: white;
+                        padding: 20px;
+                        border-radius: 5px;
+                        text-align: center;
+                        width: 300px;
+                    }
 
-        .close-button {
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            font-size: 20px;
-            cursor: pointer;
-        }
+                    .close-button {
+                        position: absolute;
+                        top: 5px;
+                        right: 5px;
+                        font-size: 20px;
+                        cursor: pointer;
+                    }
 
-        .form-group {
-            margin-bottom: 10px;
-        }
+                    .form-group {
+                        margin-bottom: 10px;
+                    }
 
-        label {
-            display: block;
-            text-align: left;
-            margin-bottom: 3px;
-        }
+                    label {
+                        display: block;
+                        text-align: left;
+                        margin-bottom: 3px;
+                    }
 
-        input[type="email"],
-        textarea {
-            width: 100%;
-            padding: 5px;
-            border: 1px solid #ccc;
-            border-radius: 3px;
-        }
+                    input[type="email"],
+                    textarea {
+                        width: 100%;
+                        padding: 5px;
+                        border: 1px solid #ccc;
+                        border-radius: 3px;
+                    }
 
-        button[type="submit"] {
-            background-color: #4CAF50;
-            color: white;
-            padding: 8px 15px;
-            border: none;
-            border-radius: 3px;
-            cursor: pointer;
-        }
+                    button[type="submit"] {
+                        background-color: #4CAF50;
+                        color: white;
+                        padding: 8px 15px;
+                        border: none;
+                        border-radius: 3px;
+                        cursor: pointer;
+                    }
 
-        .message {
-            margin-top: 10px;
-            font-size: 14px;
-        }
+                    .message {
+                        margin-top: 10px;
+                        font-size: 14px;
+                    }
 
-        .success {
-            color: green;
-        }
+                    .success {
+                        color: green;
+                    }
 
-        .error {
-            color: red;
-        }
-    </style>
+                    .error {
+                        color: red;
+                    }
+                </style>
                 <div class="footer-social">
                     <a href="https://web.telegram.org/k/#@ST4S1K_VIP_001" aria-label="Social media link">
                         <img src="img/tg.jpg" class="social-icon" alt="Social media icon">
@@ -341,87 +431,89 @@
                     <a href="tel: +79680114801">
                         <img src="img/phone.jpg" class="social-icon" alt="Social media icon">
                     </a>
-<div id="emailPopup" class="popup">
-    <div class="popup-content">
-        <span class="close-button" onclick="hideEmailPopup()">×</span>
-        <h2>Напишите нам</h2>
-        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-            <div class="form-group">
-                <label for="email">Ваш Email:</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            <div class="form-group">
-                <label for="subject">Тема письма:</label>
-                <input type="text" id="subject" name="subject" required>
-                <label for="message">Сообщение:</label>
-                <textarea id="message" name="message" rows="3" required></textarea>
-            </div>
-            <button type="submit" name="submit">Отправить</button>
-        </form>
-        <div id="form-message" class="message">
-            <?php //чекаем письмо по адресу http://localhost:8025/ обязательно запускаем mailhog
-            if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
+                    <div id="emailPopup" class="popup">
+                        <div class="popup-content">
+                            <span class="close-button" onclick="hideEmailPopup()">×</span>
+                            <h2>Напишите нам</h2>
+                            <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                                <div class="form-group">
+                                    <label for="email">Ваш Email:</label>
+                                    <input type="email" id="email" name="email" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="subject">Тема письма:</label>
+                                    <input type="text" id="subject" name="subject" required>
+                                    <label for="message">Сообщение:</label>
+                                    <textarea id="message" name="message" rows="3" required></textarea>
+                                </div>
+                                <button type="submit" name="submit">Отправить</button>
+                            </form>
+                            <div id="form-message" class="message">
+                                <?php //чекаем письмо по адресу http://localhost:8025/ обязательно запускаем mailhog
+                                if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
 
-                $to = "st4s1k@internet.ru";
-                $subject = filter_input(INPUT_POST, 'subject', FILTER_SANITIZE_STRING);
-                $message = filter_input(INPUT_POST, 'message', FILTER_SANITIZE_STRING);
-                $fromEmail = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+                                    $to = "st4s1k@internet.ru";
+                                    $subject = filter_input(INPUT_POST, 'subject', FILTER_SANITIZE_STRING);
+                                    $message = filter_input(INPUT_POST, 'message', FILTER_SANITIZE_STRING);
+                                    $fromEmail = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
 
-                if (!filter_var($fromEmail, FILTER_VALIDATE_EMAIL)) {
-                    echo "<p class='error'>Некорректный email адрес</p>";
-                    exit;
-                }
+                                    if (!filter_var($fromEmail, FILTER_VALIDATE_EMAIL)) {
+                                        echo "<p class='error'>Некорректный email адрес</p>";
+                                        exit;
+                                    }
 
-                $headers = "From: $fromEmail\r\n";
-                $headers .= "Reply-To: $fromEmail\r\n";
-                $headers .= "MIME-Version: 1.0\r\n";
-                $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
+                                    $headers = "From: $fromEmail\r\n";
+                                    $headers .= "Reply-To: $fromEmail\r\n";
+                                    $headers .= "MIME-Version: 1.0\r\n";
+                                    $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
 
-                ini_set("SMTP", "localhost");
-                ini_set("smtp_port", "1025");
+                                    ini_set("SMTP", "localhost");
+                                    ini_set("smtp_port", "1025");
 
-                try {
-                    $result = mail($to, $subject, $message, $headers);
-                } catch (Exception $e) {
-                    echo "<p class='error'>Ошибка: " . htmlspecialchars($e->getMessage()) . "</p>";
-                }
-            }
-            ?>
-        </div>
-    </div>
-</div>
+                                    try {
+                                        $result = mail($to, $subject, $message, $headers);
+                                    } catch (Exception $e) {
+                                        echo "<p class='error'>Ошибка: " . htmlspecialchars($e->getMessage()) . "</p>";
+                                    }
+                                }
+                                ?>
+                            </div>
+                        </div>
+                    </div>
 
-<style>
-    .error {
-        color: red;
-        margin-top: 10px;
-    }
-    .success {
-        color: green;
-        margin-top: 10px;
-    }
-</style>
+                    <style>
+                        .error {
+                            color: red;
+                            margin-top: 10px;
+                        }
+
+                        .success {
+                            color: green;
+                            margin-top: 10px;
+                        }
+                    </style>
 
 
-    <script>
-        function showEmailPopup() {
-            document.getElementById('emailPopup').style.display = 'block';
-        }
+                    <script>
+                        function showEmailPopup() {
+                            document.getElementById('emailPopup').style.display = 'block';
+                        }
 
-        function hideEmailPopup() {
-            document.getElementById('emailPopup').style.display = 'none';
-        }
+                        function hideEmailPopup() {
+                            document.getElementById('emailPopup').style.display = 'none';
+                        }
 
-        window.onclick = function(event) {
-            var popup = document.getElementById('emailPopup');
-            if (event.target == popup) {
-                popup.style.display = "none";
-            }
-        }
-    </script>
+                        window.onclick = function (event) {
+                            var popup = document.getElementById('emailPopup');
+                            if (event.target == popup) {
+                                popup.style.display = "none";
+                            }
+                        }
+                    </script>
                 </div>
             </div>
         </footer>
     </div>
 </body>
+
 </html>

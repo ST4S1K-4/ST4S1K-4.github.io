@@ -112,6 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -126,6 +127,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             border: 1px solid #cc0000;
             border-radius: 4px;
         }
+
         .success-message {
             color: green;
             margin: 10px 0;
@@ -134,6 +136,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             border: 1px solid #00cc00;
             border-radius: 4px;
         }
+
         .visually-hidden {
             position: absolute;
             width: 1px;
@@ -144,10 +147,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             clip: rect(0 0 0 0);
             overflow: hidden;
         }
+
         .custom-button {
             display: inline-block;
             padding: 10px 20px;
-            background-color: #007bff; /* Пример цвета */
+            background-color: #007bff;
+            /* Пример цвета */
             color: white;
             border-radius: 5px;
             cursor: pointer;
@@ -155,20 +160,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         .custom-button:hover {
-            background-color: #0056b3; /* Цвет при наведении */
+            background-color: #0056b3;
+            /* Цвет при наведении */
         }
+
         .file-name {
             margin-left: 10px;
         }
     </style>
 </head>
+
 <body>
     <header class="head_foot">
         <div class="logo" name="logo">
             <img src="img/Логотип(1).png" alt="">
         </div>
         <nav class="navigation">
-            <a href="index.html" class="main">Главная</a>
+            <a href="index.php" class="main">Главная</a>
             <a href="users_profile.php" class="main">Профиль</a>
             <a href="projects_user.php" class="main">Мои проекты</a>
         </nav>
@@ -190,11 +198,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="create_input">
                     <div class="input">
                         Название проекта*
-                        <input type="text" name="name_project" value="<?php echo htmlspecialchars($name_project); ?>" required>
+                        <input type="text" name="name_project" value="<?php echo htmlspecialchars($name_project); ?>"
+                            required>
                     </div>
                     <div class="input">
                         Дата начала*
-                        <input type="date" name="start_date" value="<?php echo htmlspecialchars($start_date); ?>" required>
+                        <input type="date" name="start_date" value="<?php echo htmlspecialchars($start_date); ?>"
+                            required>
                     </div>
                     <div class="input">
                         Дата окончания*
@@ -202,11 +212,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                     <div class="input">
                         Описание проекта*
-                        <textarea name="description" rows="5" cols="50" required><?php echo htmlspecialchars($description); ?></textarea>
+                        <textarea name="description" rows="5" cols="50"
+                            required><?php echo htmlspecialchars($description); ?></textarea>
                     </div>
                     <div class="input" id="comm">
                         Комментарий
-                        <textarea name="comment_p" rows="5" cols="50"><?php echo htmlspecialchars($comment_p); ?></textarea>
+                        <textarea name="comment_p" rows="5"
+                            cols="50"><?php echo htmlspecialchars($comment_p); ?></textarea>
                     </div>
                 </div>
                 <div class="file-upload">
@@ -224,26 +236,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </main>
 
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const realInput = document.getElementById('real-input');
-        const fileName = document.getElementById('file-name');
+        document.addEventListener('DOMContentLoaded', function () {
+            const realInput = document.getElementById('real-input');
+            const fileName = document.getElementById('file-name');
 
-        if (realInput && fileName) {
-            realInput.addEventListener('change', function() {
-                if (this.files && this.files.length > 0) {
-                    if (this.files.length > 1) {
-                        fileName.textContent = `${this.files.length} файлов выбрано`;
+            if (realInput && fileName) {
+                realInput.addEventListener('change', function () {
+                    if (this.files && this.files.length > 0) {
+                        if (this.files.length > 1) {
+                            fileName.textContent = `${this.files.length} файлов выбрано`;
+                        } else {
+                            fileName.textContent = this.files[0].name;
+                        }
                     } else {
-                        fileName.textContent = this.files[0].name;
+                        fileName.textContent = 'Файл не выбран';
                     }
-                } else {
-                    fileName.textContent = 'Файл не выбран';
-                }
-            });
-        } else {
-            console.error('Элементы не найдены! Проверьте ID элементов.');
-        }
-    });
+                });
+            } else {
+                console.error('Элементы не найдены! Проверьте ID элементов.');
+            }
+        });
     </script>
 </body>
+
 </html>
